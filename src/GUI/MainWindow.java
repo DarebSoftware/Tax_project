@@ -1,9 +1,5 @@
 package GUI;
-/*
- * Giorgos taxiarxou
- * Pantazis vouzaxakis
- * 
- */
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.EventQueue;
@@ -20,11 +16,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import InfoManager.Company;
-import InfoManager.DataManager;
+import InfoManager.TaxPayerListManager;
 import InfoManager.Receipt;
 import InfoManager.TaxPayer;
-import Input.InfoLoader;
-import Output.InfoOutput;
+import Input.TaxPayerInfoLoader;
+import Output.TaxPayerInfoOutput;
 
 public class MainWindow {
 
@@ -35,10 +31,10 @@ public class MainWindow {
 	private JPanel addTaxPayerPanel;
 	private JTextField titleAfm;
 	private JTextField inputAfm;
-	private InfoLoader infoLoader;
+	private TaxPayerInfoLoader infoLoader;
 	private DefaultListModel<String> taxPayerListModel;
 	JList<String> taxPayerList;
-	private DataManager dataManager;
+	private TaxPayerListManager dataManager;
 	private JPanel panel;
 	private JButton viewDetailsButton;
 	private JPanel taxPayerDetailPanel;
@@ -103,7 +99,7 @@ public class MainWindow {
 	private JButton btnBack;
 	private JButton btnBack_1;
 	private JButton btnNewButton_5;
-	private InfoOutput infoOutput;
+	private TaxPayerInfoOutput infoOutput;
 	private JTextField txtAddTaxpayerFrom;
 	private JTextField txtDeleteTaxPayer;
 	
@@ -138,9 +134,9 @@ public class MainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		dataManager = new DataManager();
-		infoLoader = new InfoLoader();
-		infoOutput = new InfoOutput();
+		dataManager = new TaxPayerListManager();
+		infoLoader = new TaxPayerInfoLoader();
+		infoOutput = new TaxPayerInfoOutput();
 		frame = new JFrame();
 		frame.setBounds(100, 100, 511, 472);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -192,7 +188,7 @@ public class MainWindow {
 				
 				menuPanel.setVisible(false);
 				taxPayerListPanel.setVisible(true);
-				taxPayerListModel=dataManager.createListModel();
+				taxPayerListModel=dataManager.createTaxPayerListModel();
 				taxPayerList.setModel(taxPayerListModel);
 				taxPayerList.repaint();
 				taxPayerList.revalidate();

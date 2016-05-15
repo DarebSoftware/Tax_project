@@ -1,75 +1,93 @@
 package InfoManager;
 
 public class Receipt {
+	
 	private int receiptId;
-	private String Date;
-	private String Kind;
-	private double Amount;
-	private String Country;
-	private String City;
-	private String Street;
-	private int Number;
+	private String date;
+	private String kind;
+	private double amount;
+	private String country;
+	private String city;
+	private String street;
+	private int number;
 	private Company company;
-	//constructors
+	
 	public Receipt(){
 		company = new Company();
 	}
-	//set Methods
+	
+	
 	public void setCompany(Company c){
-		this.company=c;
-	}
-	public void setReceiptId(int receiptId){
-		this.receiptId=receiptId;
-	}
-	public void setDate(String Date){
-		this.Date=Date;
-	}
-	public void setKind(String Kind){
-		this.Kind=Kind;
-	}
-	public void setAmount(double Amount){
-		this.Amount=Amount;
+		this.company = c;
 	}
 	
-	public void setCity(String City){
-		this.City=City;
+	public void setReceiptId(int receiptId){
+		this.receiptId = receiptId;
 	}
-	public void setStreet(String Street){
-		this.Street=Street;
+	
+	public void setDate(String date){
+		this.date = date;
 	}
-	public void setNumber(int Number){
-		this.Number=Number;
+	
+	public void setKind(String kind){
+		this.kind = kind;
 	}
-	public void setCountry(String Country){
-		this.Country=Country;
+	
+	public void setAmount(double amount){
+		this.amount = amount;
 	}
-	// get Methods
+	
+	public void setCity(String city){
+		this.city = city;
+	}
+	
+	public void setStreet(String street){
+		this.street = street;
+	}
+	
+	public void setNumber(int number){
+		this.number = number;
+	}
+	
+	public void setCountry(String country){
+		this.country = country;
+	}
+	
 	public Company getCompany(){
 		return company;
 	}
+	
 	public double getAmount(){
-		return Amount;
+		return amount;
 	}
 	
 	public int getReceiptId(){
 		return receiptId;
 	}
+	
 	public String getDate(){
-		return Date;
+		return date;
 	}
+	
 	public String getKind(){
-		return Kind;
+		return kind;
 	}
+	
 	public String getCity(){
-		return City;
+		return city;
 	}
+	
 	public String getStreet(){
-		return Street;
+		return street;
 	}
+	
 	public int getNumber(){
-		return Number;
+		return number;
 	}
+	
 	public String getCountry(){
-		return Country;
-	}	
+		return country;
+	}
+	
+	
 }

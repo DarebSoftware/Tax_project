@@ -12,12 +12,9 @@ import InfoManager.Company;
 import InfoManager.Receipt;
 import InfoManager.TaxPayer;
 
-
 public class TxtUtil{
-	private static String PATH=("C:\\Users\\xontrh\\Desktop\\");
+	private static String PATH=("C:\\Users\\Drdarky\\Desktop\\");
 	private static String suffix = ".txt";
-	
-	
 	
 	public static TaxPayer loadInfo(String AFM){
 		Scanner inputReader = null;
@@ -49,51 +46,50 @@ public class TxtUtil{
 		while(inputReader.hasNextLine()){
 			line = inputReader.nextLine();
 			if(line.contains("Receipt ID: ")){
-				Receipt r = new Receipt();
+				Receipt receipt = new Receipt();
 				line = line.substring(line.lastIndexOf(": ")+2);
-				r.setReceiptId(Integer.parseInt(line));
+				receipt.setReceiptId(Integer.parseInt(line));
 				
 				line = inputReader.nextLine();
 				line = line.substring(line.lastIndexOf(": ")+2);
-				r.setDate(line);
+				receipt.setDate(line);
 				
 				line = inputReader.nextLine();
 				line = line.substring(line.lastIndexOf(": ")+2);
-				r.setKind(line);
+				receipt.setKind(line);
 				
 				line = inputReader.nextLine();
 				line = line.substring(line.lastIndexOf(": ")+2);
-				r.setAmount(Double.parseDouble(line));
+				receipt.setAmount(Double.parseDouble(line));
 				
-				Company c = new Company();
+				Company company = new Company();
 				line = inputReader.nextLine();
 				line = line.substring(line.lastIndexOf(": ")+2);
-				c.setName(line);
-				
-				line = inputReader.nextLine();
-				line = line.substring(line.lastIndexOf(": ")+2);
-				c.setCountry(line);
+				company.setName(line);
 				
 				line = inputReader.nextLine();
 				line = line.substring(line.lastIndexOf(": ")+2);
-				c.setCity(line);
+				company.setCountry(line);
 				
 				line = inputReader.nextLine();
 				line = line.substring(line.lastIndexOf(": ")+2);
-				c.setStreet(line);
+				company.setCity(line);
 				
 				line = inputReader.nextLine();
 				line = line.substring(line.lastIndexOf(": ")+2);
-				c.setNumber(Integer.parseInt(line));
+				company.setStreet(line);
 				
-				r.setCompany(c);
-				taxpayer.addReceiptToArray(r);
+				line = inputReader.nextLine();
+				line = line.substring(line.lastIndexOf(": ")+2);
+				company.setNumber(Integer.parseInt(line));
+				
+				receipt.setCompany(company);
+				taxpayer.addReceiptToArray(receipt);
 			}	
 		}
 		inputReader.close();
 		return taxpayer;
 	}
-	
 	
 	public static void writeReceipt2File(Receipt newReceipt,String AFM){
 		FileOutputStream outputStream = null;
@@ -190,49 +186,18 @@ public class TxtUtil{
 			Files.delete(FileSystems.getDefault().getPath(PATH+source));
 		} 
 		catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
 	}
-	
 	public static void deleteFile(String afm){
 		try {
 			Files.delete(FileSystems.getDefault().getPath(PATH+afm+"_INFO.txt"));
 		} 
 		catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
-	}
-	public static void saveTaxPayerInfo(TaxPayer tp){
-		tp.calculateDifferentReceiptsNumbers();
-		FileOutputStream outputStream = null;
-		try
-		{
-			outputStream =new FileOutputStream(PATH+tp.getAfm()+"_LOG"+suffix,false);
-			
-		}
-		catch (FileNotFoundException e)
-		{
-			System.out.println("Error opening the file stuff.txt.");
-			System.exit(0);
-		}
-		
-		
-		PrintWriter outputWriter = new PrintWriter(outputStream);
-		
-		outputWriter.println("Name: " + tp.getName());
-		outputWriter.println("AFM: " + tp.getAfm());
-		outputWriter.println("Basic Tax: " + tp.calculateTax());
-		outputWriter.println("Tax Increase: " + Double.toString(tp.calculateFinalTax()-tp.calculateTax()));
-		outputWriter.println("Total Tax: " + tp.calculateFinalTax());
-		outputWriter.println("TotalReceiptsGathered: " + tp.getTotalReceiptGathered());
-		outputWriter.println("Entertainment: " + tp.getEntertainmentReceiptsNumber());
-		outputWriter.println("Basic: " + tp.getBasicReceiptsNumber());
-		outputWriter.println("Travel: " + tp.getTravelReceiptsNumber());
-		outputWriter.println("Health: " + tp.getHealthReceiptsNumber());
-		outputWriter.println("Other: " + tp.getOtherReceiptsNumber());
-		outputWriter.close();
 	}
 }

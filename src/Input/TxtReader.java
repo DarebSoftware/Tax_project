@@ -1,5 +1,6 @@
 package Input;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,13 +13,24 @@ import InfoManager.Company;
 import InfoManager.Receipt;
 import InfoManager.TaxPayer;
 
-public class TxtUtil{
-	private static String PATH=("C:\\Users\\Drdarky\\Desktop\\");
+public class TxtReader implements FactoryFileReader{
+	private static String PATH=("C:\\Users\\pantzos\\Desktop\\");
 	private static String suffix = ".txt";
 	
-	public static TaxPayer loadInfo(String AFM){
+	public TaxPayer loadInfo(String AFM){
+		//delete this---------------------------------------------------------
+		File folder = new File(PATH);
+		File[] listOfFiles = folder.listFiles();
+		    for (int i = 0; i < listOfFiles.length; i++) {
+		      if (listOfFiles[i].isFile()) {
+		    	  String temp = listOfFiles[i].getName();
+		    	  int a = temp.indexOf('.');
+		    	  System.out.println(temp.substring(a));
+		      }
+		    }
+		 //-----------------------------------------------------------------------------
 		Scanner inputReader = null;
-		TaxPayer taxpayer = new TaxPayer();
+		TaxPayer taxpayer = new TaxPayer(this);
 		try{
 			inputReader = new Scanner(new FileInputStream(PATH+AFM+"_INFO"+suffix));
 		}
@@ -91,7 +103,7 @@ public class TxtUtil{
 		return taxpayer;
 	}
 	
-	public static void writeReceipt2File(Receipt newReceipt,String AFM){
+	public void writeReceipt2File(Receipt newReceipt,String AFM){
 		FileOutputStream outputStream = null;
 		try
 		{
@@ -119,7 +131,7 @@ public class TxtUtil{
 		outputWriter.close();
 	}
 	
-	public static void deleteReceipt(int receiptId,String AFM){
+	public void deleteReceipt(int receiptId,String AFM){
 		
 		FileOutputStream outputStream = null;
 		Scanner inputReader = null;
@@ -157,7 +169,7 @@ public class TxtUtil{
 		
 	}
 	
-	public  static void moveFromFile2File(String source,String destination){
+	public void moveFromFile2File(String source,String destination){
 		FileOutputStream outputStream = null;
 		Scanner inputReader = null;
 		
@@ -191,7 +203,7 @@ public class TxtUtil{
 		}
 		
 	}
-	public static void deleteFile(String afm){
+	public void deleteFile(String afm){
 		try {
 			Files.delete(FileSystems.getDefault().getPath(PATH+afm+"_INFO.txt"));
 		} 

@@ -135,7 +135,6 @@ public class MainWindow {
 	 */
 	private void initialize() {
 		dataManager = new TaxPayerListManager();
-		infoLoader = new TaxPayerInfoLoader();
 		infoOutput = new TaxPayerInfoOutput();
 		frame = new JFrame();
 		frame.setBounds(100, 100, 511, 472);
@@ -262,7 +261,7 @@ public class MainWindow {
 		submitAfmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String Afm = inputAfm.getText();
-				dataManager.addTaxPayer(infoLoader.loadInfo(Afm));
+				dataManager.importTaxPayer(Afm);
 				menuPanel.setVisible(true);
 				taxPayerListPanel.setVisible(false);
 				addTaxPayerPanel.setVisible(false);

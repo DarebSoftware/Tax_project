@@ -1,5 +1,7 @@
 package InfoManager;
 import java.util.*;
+
+import Input.FactoryFileReader;
 import Input.TaxPayerInfoLoader;
 
 public class TaxPayer {
@@ -15,13 +17,25 @@ public class TaxPayer {
 	private double travelReceiptsNumber;
 	private double healthReceiptsNumber;
 	private double otherReceiptsNumber;
+	private FactoryFileReader fileReader;
 	private TaxPayerInfoLoader taxPayerInfoLoader;
+	private HashMap<String,double[]> taxParameters;
+
 	
-	public TaxPayer(){
+	public TaxPayer(FactoryFileReader fileReader){
 		 receiptsArray = new ArrayList<Receipt>();
-		 taxPayerInfoLoader = new TaxPayerInfoLoader();
+		 taxPayerInfoLoader = new TaxPayerInfoLoader(fileReader);
+		 configTaxParameters();
 	}
 
+	private void configTaxParameters(){
+		taxParameters = new HashMap<>();
+		taxParameters.put("MarriedFilingJointly", new double[]{1930.28,5731.64,9492.82,18197.69,36080,90000,143350,254240,5.35,7.05,7.05,7.85,9.85});
+		taxParameters.put("MarriedFilingSeparately", new double[]{965.14,4746.76,6184.88,9098.80,18040,71680,90000,127120,5.35,7.05,7.85,7.85,9.85});
+		taxParameters.put("Single", new double[]{1320.38,5296.58,5996.80,10906.19,24680,81080,90000,152540,5.35,7.05,7.85,7.85,9.85});
+		taxParameters.put("MarriedHeadofHousehold", new double[]{1625.87,5828.38,8092.13,14472.61,30390,90000,122110,203390,5.35,7.05,7.05,7.85,9.85});
+	}
+	
 	public String getOverview(){
 		return "Name :"+name + " AFM : "+afm;
 	}
@@ -85,19 +99,19 @@ public class TaxPayer {
 		double receiptMoney = 0;
 		receiptMoney = calculateReceiptsMoney();
 		tax = calculateTax();
-		if(receiptMoney>=(0/100)*income && receiptMoney<(20/100)*income){
+		if(receiptMoney>=0 && receiptMoney<(20/100)*income){
 			finalTax = tax + 0.08*tax;
 		}
 		
-		else if(receiptMoney >= (20/100)*income && receiptMoney < (40/100)*income){
+		else if(receiptMoney < (40/100)*income){
 			finalTax = tax + 0.04*tax;
 		}
 		
-		else if(receiptMoney >= (40/100)*income && receiptMoney < (60/100)*income){
+		else if(receiptMoney < (60/100)*income){
 			finalTax = tax - 0.15*tax;
 		}
 		
-		else if(receiptMoney >= (60/100)*income){
+		else {
 			finalTax = tax - 0.30*tax;
 		}
 		return finalTax;
@@ -131,45 +145,43 @@ public class TaxPayer {
 		return receiptsMoney;
 	}
 	
-	public double calculateTaxByKind(double firstStartingTax,double secondStartingTax,double thirdStartingTax,double fourthStartingTax
-			,double firstTaxableAmount,double secondTaxableAmount,double thirdTaxableAmount,double fourthTaxableAmount
-			,double firstPercentage,double secondPecentage,double thirdPercentage,double fourthPercentage
-			,double fifthPercentage)
+	public double calculateTaxByKind(String kind)
 	{
 		double tax=0;
-		if(income >= 0 && income < firstTaxableAmount){
-			tax = (firstPercentage/100)* income;
+		if(income >= 0 && income < taxParameters.get(kind)[4]){
+			tax = (taxParameters.get(kind)[8]/100)* income;
 		}
-		else if(income >= firstTaxableAmount && income < secondTaxableAmount){
-			tax = firstStartingTax + ((secondPecentage/100)*(income-firstTaxableAmount));
+		else if(income < taxParameters.get(kind)[5]){
+			tax = taxParameters.get(kind)[0] + ((taxParameters.get(kind)[9]/100)*(income-taxParameters.get(kind)[4]));
 		}
-		else if(income >= secondTaxableAmount && income < thirdTaxableAmount){
-			tax = secondStartingTax + ((thirdPercentage/100)*(income-secondTaxableAmount));
+		else if(income < taxParameters.get(kind)[6]){
+			tax = taxParameters.get(kind)[1]+ ((taxParameters.get(kind)[10]/100)*(income-taxParameters.get(kind)[5]));
 		}
-		else if(income >= thirdTaxableAmount && income < fourthTaxableAmount){
-			tax = thirdStartingTax + ((fourthPercentage/100)*(income-thirdTaxableAmount));
+		else if(income < taxParameters.get(kind)[7]){
+			tax = taxParameters.get(kind)[2] + ((taxParameters.get(kind)[11]/100)*(income-taxParameters.get(kind)[6]));
 		}
-		else if(income >= fourthTaxableAmount){
-			tax = fourthStartingTax + ((fifthPercentage/100)*(income-fourthTaxableAmount));
+		else{
+			tax = taxParameters.get(kind)[3] + ((taxParameters.get(kind)[12]/100)*(income-taxParameters.get(kind)[7]));
 		}
 		return tax;
 	}
 	
 	public double calculateMarriedFilingJointlyTax(){
-		return calculateTaxByKind(1930.28,5731.64,9492.82,18197.69,36080,90000,143350,254240,5.35,7.05,7.05,7.85,9.85);
+		return calculateTaxByKind("MarriedFilingJointly");
 	}
 	
 	public double calculateMarriedFilingSeparatelyTax(){
-		return calculateTaxByKind(965.14,4746.76,6184.88,9098.80,18040,71680,90000,127120,5.35,7.05,7.85,7.85,9.85);
+		return calculateTaxByKind("MarriedFilingSeparately");
 	}
 	
 	public double calculateSingleTax(){
-		return calculateTaxByKind(1320.38,5296.58,5996.80,10906.19,24680,81080,90000,152540,5.35,7.05,7.85,7.85,9.85);
+		return calculateTaxByKind("Single");
 	}
 	
 	public double calculateHeadofHouseholdTax(){
-		return calculateTaxByKind(1625.87,5828.38,8092.13,14472.61,30390,90000,122110,203390,5.35,7.05,7.05,7.85,9.85);
+		return calculateTaxByKind("HeadofHousehold");
 	}
+	
 	public ArrayList<Receipt> getReceiptsArray(){
 		return receiptsArray;
 	}

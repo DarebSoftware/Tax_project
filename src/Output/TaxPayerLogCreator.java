@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import InfoManager.TaxPayer;
 
 public class TaxPayerLogCreator {
-	private static String PATH=("C:\\Users\\Drdarky\\Desktop\\");
+	private static String PATH=("C:\\Users\\pantzos\\Desktop\\");
 	private static String suffix = ".txt";
 	
 	public static void saveTaxPayerInfo(TaxPayer taxPayer){

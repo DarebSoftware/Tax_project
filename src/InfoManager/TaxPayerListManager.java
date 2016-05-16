@@ -1,11 +1,14 @@
 package InfoManager;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
-import Input.TxtUtil;
+
+import Input.TaxPayerInfoLoader;
+import Input.TxtReader;
 
 public class TaxPayerListManager {
-	private ArrayList<TaxPayer> taxPayerArray;
-	
+	private static ArrayList<TaxPayer> taxPayerArray;
+
+
 	public TaxPayerListManager(){
 		taxPayerArray=new ArrayList<TaxPayer>();
 	}
@@ -21,6 +24,10 @@ public class TaxPayerListManager {
 	public void addTaxPayer(TaxPayer taxPayer){
 		taxPayerArray.add(taxPayer);
 	}
+	public void importTaxPayer(String afm){
+		addTaxPayer(new TaxPayerInfoLoader(new TxtReader()).loadTaxPayer(afm));
+	}
+	
 	
 	public ArrayList<TaxPayer> getTaxPayerArray() {
 		return taxPayerArray;
@@ -41,6 +48,5 @@ public class TaxPayerListManager {
 				taxPayerArray.remove(i);
 			}
 		}
-		TxtUtil.deleteFile(afm);
 	}
 }

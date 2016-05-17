@@ -19,8 +19,11 @@ import InfoManager.Company;
 import InfoManager.TaxPayerListManager;
 import InfoManager.Receipt;
 import InfoManager.TaxPayer;
-import Input.TaxPayerInfoLoader;
 import Output.TaxPayerInfoOutput;
+import Output.TxtWriter;
+import Output.XmlWriter;
+import javax.swing.JMenuBar;
+import javax.swing.JToolBar;
 
 public class MainWindow {
 
@@ -31,7 +34,6 @@ public class MainWindow {
 	private JPanel addTaxPayerPanel;
 	private JTextField titleAfm;
 	private JTextField inputAfm;
-	private TaxPayerInfoLoader infoLoader;
 	private DefaultListModel<String> taxPayerListModel;
 	JList<String> taxPayerList;
 	private TaxPayerListManager dataManager;
@@ -196,6 +198,15 @@ public class MainWindow {
 		chooseTaxPayerButton.setBounds(125, 134, 171, 23);
 		menuPanel.add(chooseTaxPayerButton);
 		
+		JButton btnNewButton_6 = new JButton("Exit");
+		btnNewButton_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		btnNewButton_6.setBounds(125, 381, 171, 23);
+		menuPanel.add(btnNewButton_6);
+		
 		taxPayerListPanel = new JPanel();
 		frame.getContentPane().add(taxPayerListPanel, "name_834297479952213");
 		taxPayerListPanel.setLayout(new BorderLayout(0, 0));
@@ -219,8 +230,7 @@ public class MainWindow {
 					addTaxPayerPanel.setVisible(false);
 					taxPayerDetailPanel.setVisible(true);
 					taxPayerIndex=index;
-				}
-				else{
+				}else{
 					System.out.println("Nothing selected");
 				}
 			}
@@ -496,7 +506,7 @@ public class MainWindow {
 				addReceiptPanel.setVisible(true);
 			}
 		});
-		addReceiptButton.setBounds(300, 75, 120, 23);
+		addReceiptButton.setBounds(300, 44, 162, 23);
 		taxPayerDetailPanel.add(addReceiptButton);
 		
 		JButton deleteReceiptButton = new JButton("DELETE RECEIPT");
@@ -510,7 +520,7 @@ public class MainWindow {
 				deleteReceiptoPanel.setVisible(true);
 			}
 		});
-		deleteReceiptButton.setBounds(300, 137, 120, 23);
+		deleteReceiptButton.setBounds(300, 75, 162, 23);
 		taxPayerDetailPanel.add(deleteReceiptButton);
 		
 		JButton btnBarChart = new JButton("BAR CHART");
@@ -519,7 +529,7 @@ public class MainWindow {
 				infoOutput.createBarChart(dataManager.getTaxPayer(taxPayerIndex));
 			}
 		});
-		btnBarChart.setBounds(300, 199, 120, 23);
+		btnBarChart.setBounds(300, 106, 162, 23);
 		taxPayerDetailPanel.add(btnBarChart);
 		
 		JButton btnPipaChart = new JButton("PIPA CHART ");
@@ -528,7 +538,7 @@ public class MainWindow {
 				infoOutput.createPieChart(dataManager.getTaxPayer(taxPayerIndex));
 			}
 		});
-		btnPipaChart.setBounds(300, 261, 120, 23);
+		btnPipaChart.setBounds(300, 140, 162, 23);
 		taxPayerDetailPanel.add(btnPipaChart);
 		
 		btnNewButton_3 = new JButton("BACK");
@@ -542,17 +552,26 @@ public class MainWindow {
 				deleteReceiptoPanel.setVisible(false);
 			}
 		});
-		btnNewButton_3.setBounds(300, 356, 120, 23);
+		btnNewButton_3.setBounds(342, 387, 120, 23);
 		taxPayerDetailPanel.add(btnNewButton_3);
 		
-		btnNewButton_5 = new JButton("SAVE REPORT");
+		btnNewButton_5 = new JButton("SAVE REPORT TXT");
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				infoOutput.saveTaxPayerInfo(dataManager.getTaxPayer(taxPayerIndex));
+				infoOutput.saveTaxPayerInfo(dataManager.getTaxPayer(taxPayerIndex),new TxtWriter());
 			}
 		});
-		btnNewButton_5.setBounds(300, 311, 120, 23);
+		btnNewButton_5.setBounds(300, 199, 162, 23);
 		taxPayerDetailPanel.add(btnNewButton_5);
+		
+		JButton btnSaveReportXml = new JButton("SAVE REPORT XML");
+		btnSaveReportXml.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				infoOutput.saveTaxPayerInfo(dataManager.getTaxPayer(taxPayerIndex),new XmlWriter());
+			}
+		});
+		btnSaveReportXml.setBounds(300, 261, 162, 23);
+		taxPayerDetailPanel.add(btnSaveReportXml);
 		
 		addReceiptPanel = new JPanel();
 		frame.getContentPane().add(addReceiptPanel, "name_26974980837306");

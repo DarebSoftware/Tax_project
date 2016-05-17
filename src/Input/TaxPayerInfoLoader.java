@@ -1,4 +1,5 @@
 package Input;
+
 import InfoManager.Receipt;
 import InfoManager.TaxPayer;
 
@@ -27,6 +28,6 @@ public class TaxPayerInfoLoader{
 	}
 	
 	public void deleteReceipt(Receipt receipt,String AFM){
-		fileReader.deleteReceipt(receipt.getReceiptId(), AFM);
+	  fileReader.deleteReceipt(receipt.getReceiptId(), AFM);
 	}
 }

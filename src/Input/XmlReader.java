@@ -161,7 +161,6 @@ public class XmlReader implements FactoryFileReader{
 				}
 			}
 				
-			
 			// write the content into xml file
 	        TransformerFactory transformerFactory =
 	        TransformerFactory.newInstance();
@@ -185,7 +184,7 @@ public class XmlReader implements FactoryFileReader{
 	public void initializeFileInput(String AFM){
 		File inputFile = new File(PATH+AFM+"_INFO"+suffix);
         DocumentBuilderFactory dbFactory 
-           = DocumentBuilderFactory.newInstance();
+            =DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
 		try {
 			dBuilder = dbFactory.newDocumentBuilder();
@@ -197,6 +196,4 @@ public class XmlReader implements FactoryFileReader{
 			System.out.println("Check your xml format.");
 		}
 	}
-
-
 }

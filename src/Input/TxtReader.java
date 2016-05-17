@@ -1,6 +1,5 @@
 package Input;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -93,8 +92,7 @@ public class TxtReader implements FactoryFileReader{
 	
 	public void writeReceipt2File(Receipt newReceipt,String AFM){
 		FileOutputStream outputStream = null;
-		try
-		{
+		try{
 			outputStream =new FileOutputStream(PATH+AFM+"_INFO"+suffix,true);
 			
 		}
@@ -124,8 +122,7 @@ public class TxtReader implements FactoryFileReader{
 		FileOutputStream outputStream = null;
 		Scanner inputReader = null;
 		
-		try
-		{
+		try{
 			outputStream =new FileOutputStream(PATH+AFM+"_IN"+suffix,true);
 			inputReader = new Scanner(new FileInputStream(PATH+AFM+"_INFO"+suffix));
 		}
@@ -161,35 +158,29 @@ public class TxtReader implements FactoryFileReader{
 		FileOutputStream outputStream = null;
 		Scanner inputReader = null;
 		
-		try
-		{
+		try{
 			
 			outputStream =new FileOutputStream(PATH+destination);
 			inputReader = new Scanner(new FileInputStream(PATH+source));
-		}
-		catch (FileNotFoundException e)
-		{
+		}catch (FileNotFoundException e){
 			System.out.println("Error opening the file stuff.txt.");
-			System.exit(0);
-		}
+			System.exit(0);}
+		
 		PrintWriter outputWriter = new PrintWriter(outputStream);
 		String line = null;
+		
 		while(inputReader.hasNextLine()){
 			line = inputReader.nextLine();
 			outputWriter.println(line);
-			
 		}
 		
 		inputReader.close();
 		outputWriter.close();
 		try {
 			Files.delete(FileSystems.getDefault().getPath(PATH+source));
-		} 
-		catch (IOException e) {
-			
+		}catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	public void deleteFile(String afm){
 		try {

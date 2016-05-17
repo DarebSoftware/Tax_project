@@ -6,13 +6,12 @@ import java.io.PrintWriter;
 
 import InfoManager.TaxPayer;
 
-public class TaxPayerLogCreator {
-	private static String PATH=("C:\\Users\\pantzos\\Desktop\\");
+public class TxtWriter implements FactoryFileWriter {
 	private static String suffix = ".txt";
 	
-	public static void saveTaxPayerInfo(TaxPayer taxPayer){
-		taxPayer.calculateDifferentReceiptsNumbers();
+	public void saveTaxPayerInfo(TaxPayer taxPayer){		
 		FileOutputStream outputStream = null;
+		
 		try
 		{
 			outputStream =new FileOutputStream(PATH+taxPayer.getAfm()+"_LOG"+suffix,false);

@@ -27,10 +27,8 @@ public class TaxPayerListManager {
 		taxPayerArray.add(taxPayer);
 	}
 	public void importTaxPayer(String afm){
-		//kappa keppo
 		FactoryFileReader fileReader;
 		TaxPayerInfoLoader infoLoader = new TaxPayerInfoLoader();
-		System.out.println(FactoryFileReader.guessSuffix(afm));
 		if(FactoryFileReader.guessSuffix(afm).equals("txt")){
 			fileReader = new TxtReader();
 			infoLoader.setFileReader(fileReader);
@@ -44,10 +42,6 @@ public class TaxPayerListManager {
 	
 	public ArrayList<TaxPayer> getTaxPayerArray() {
 		return taxPayerArray;
-	}
-
-	public void setTaxPayerArray(ArrayList<TaxPayer> taxPayerArray) {
-		this.taxPayerArray = taxPayerArray;
 	}
 	
 	public TaxPayer getTaxPayer(int index){

@@ -1,4 +1,5 @@
 package InfoManager;
+
 import java.util.*;
 
 import Input.FactoryFileReader;
@@ -17,11 +18,9 @@ public class TaxPayer {
 	private double travelReceiptsNumber;
 	private double healthReceiptsNumber;
 	private double otherReceiptsNumber;
-	private FactoryFileReader fileReader;
 	private TaxPayerInfoLoader taxPayerInfoLoader;
 	private HashMap<String,double[]> taxParameters;
 
-	
 	public TaxPayer(FactoryFileReader fileReader){
 		 receiptsArray = new ArrayList<Receipt>();
 		 taxPayerInfoLoader = new TaxPayerInfoLoader(fileReader);
@@ -41,31 +40,30 @@ public class TaxPayer {
 	}
 	
 	public void calculateDifferentReceiptsNumbers(){
-		entertainmentReceiptsNumber = 0;
-		basicReceiptsNumber = 0;
-		travelReceiptsNumber = 0;
-		healthReceiptsNumber = 0;
-		otherReceiptsNumber = 0;
-		for(int i=0; i<receiptsArray.size(); i++){
+	  resetReceiptcounter();
+	  for(int i=0; i<receiptsArray.size(); i++){
 			if(receiptsArray.get(i).getKind().equals("Entertainment")){
 				entertainmentReceiptsNumber += receiptsArray.get(i).getAmount();
-			}
-			else if(receiptsArray.get(i).getKind().equals("Basic")){
+			}else if(receiptsArray.get(i).getKind().equals("Basic")){
 				basicReceiptsNumber += receiptsArray.get(i).getAmount();
-			}
-			else if(receiptsArray.get(i).getKind().equals("Travel")){
+			}else if(receiptsArray.get(i).getKind().equals("Travel")){
 				travelReceiptsNumber += receiptsArray.get(i).getAmount();
-			}
-			else if(receiptsArray.get(i).getKind().equals("Health")){
+			}else if(receiptsArray.get(i).getKind().equals("Health")){
 				healthReceiptsNumber += receiptsArray.get(i).getAmount();
-			}
-			else if(receiptsArray.get(i).getKind().equals("Other")){
+			}else if(receiptsArray.get(i).getKind().equals("Other")){
 				otherReceiptsNumber += receiptsArray.get(i).getAmount();
-			}
-			else{
+			}else{
 				System.out.println("uknown kind "+ receiptsArray.get(i).getKind());
 			}
 		}
+	}
+	
+	public void resetReceiptcounter(){
+	  entertainmentReceiptsNumber = 0;
+    basicReceiptsNumber = 0;
+    travelReceiptsNumber = 0;
+    healthReceiptsNumber = 0;
+    otherReceiptsNumber = 0;
 	}
 
 	public void addReceipt(Receipt receipt){
@@ -79,39 +77,36 @@ public class TaxPayer {
 		calculateDifferentReceiptsNumbers();
 	}
 	
-	public void deleteReceipt(int ReceiptId){
+	public int findReceipt(int receiptId){
+	  for(int i=0; i<receiptsArray.size(); i++){
+      if(receiptsArray.get(i).getReceiptId()==receiptId){
+        return i;
+      }
+	  }
+    return -1;
+	}
+	
+	public void deleteReceipt(int receiptId){
 		Receipt receipt=null;
-		for(int i=0; i<receiptsArray.size(); i++){
-			if(receiptsArray.get(i).getReceiptId()==ReceiptId){
-				receipt=receiptsArray.get(i);
-				receiptsArray.remove(i);
-				break;
-			}
-		}
+		int receiptPosition = findReceipt(receiptId);
+		receipt=receiptsArray.get(receiptPosition);
+    receiptsArray.remove(receiptPosition);
 		calculateDifferentReceiptsNumbers();
 		if(receipt!=null) taxPayerInfoLoader.deleteReceipt(receipt, Integer.toString(afm));
-		else System.out.println("Id "+ ReceiptId+" not found");
+		else System.out.println("Id "+ receiptId+" not found");
 	}
 	
 	public double calculateFinalTax(){
-		double tax = 0;
 		double finalTax = 0;
-		double receiptMoney = 0;
-		receiptMoney = calculateReceiptsMoney();
-		tax = calculateTax();
+		double receiptMoney = calculateReceiptsMoney();
+		double tax = calculateTax();
 		if(receiptMoney>=0 && receiptMoney<(20/100)*income){
 			finalTax = tax + 0.08*tax;
-		}
-		
-		else if(receiptMoney < (40/100)*income){
+		}else if(receiptMoney < (40/100)*income){
 			finalTax = tax + 0.04*tax;
-		}
-		
-		else if(receiptMoney < (60/100)*income){
+		}else if(receiptMoney < (60/100)*income){
 			finalTax = tax - 0.15*tax;
-		}
-		
-		else {
+		}else{
 			finalTax = tax - 0.30*tax;
 		}
 		return finalTax;
@@ -120,20 +115,13 @@ public class TaxPayer {
 	public double calculateTax(){
 		if(maritalStatus.contains("Single")){
 			return calculateSingleTax();
-		}
-		
-		else if(maritalStatus.contains("Married Filing Jointly")){
+		}else if(maritalStatus.contains("Married Filing Jointly")){
 			return calculateMarriedFilingJointlyTax();
-		}
-		
-		else if(maritalStatus.contains("Married Filing Separately")){
+		}else if(maritalStatus.contains("Married Filing Separately")){
 			return calculateMarriedFilingSeparatelyTax();
-		}
-		
-		else if(maritalStatus.contains("Head of Household")){
+		}else if(maritalStatus.contains("Head of Household")){
 			return calculateHeadofHouseholdTax();
 		}
-		
 		return -1;
 	}
 	
@@ -145,22 +133,17 @@ public class TaxPayer {
 		return receiptsMoney;
 	}
 	
-	public double calculateTaxByKind(String kind)
-	{
+	public double calculateTaxByKind(String kind){
 		double tax=0;
 		if(income >= 0 && income < taxParameters.get(kind)[4]){
 			tax = (taxParameters.get(kind)[8]/100)* income;
-		}
-		else if(income < taxParameters.get(kind)[5]){
+		}else if(income < taxParameters.get(kind)[5]){
 			tax = taxParameters.get(kind)[0] + ((taxParameters.get(kind)[9]/100)*(income-taxParameters.get(kind)[4]));
-		}
-		else if(income < taxParameters.get(kind)[6]){
+		}else if(income < taxParameters.get(kind)[6]){
 			tax = taxParameters.get(kind)[1]+ ((taxParameters.get(kind)[10]/100)*(income-taxParameters.get(kind)[5]));
-		}
-		else if(income < taxParameters.get(kind)[7]){
+		}else if(income < taxParameters.get(kind)[7]){
 			tax = taxParameters.get(kind)[2] + ((taxParameters.get(kind)[11]/100)*(income-taxParameters.get(kind)[6]));
-		}
-		else{
+		}else{
 			tax = taxParameters.get(kind)[3] + ((taxParameters.get(kind)[12]/100)*(income-taxParameters.get(kind)[7]));
 		}
 		return tax;
@@ -234,9 +217,9 @@ public class TaxPayer {
 		return otherReceiptsNumber;
 	}
 	public double getTotalReceiptGathered(){
-		return entertainmentReceiptsNumber+basicReceiptsNumber+
-				travelReceiptsNumber+healthReceiptsNumber+
-				otherReceiptsNumber;
+		return entertainmentReceiptsNumber+basicReceiptsNumber
+		    +travelReceiptsNumber+healthReceiptsNumber
+		    +otherReceiptsNumber;
 	}
 	public double getTaxIncrease(){
 		return calculateFinalTax()-calculateTax();

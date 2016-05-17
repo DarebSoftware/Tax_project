@@ -2,8 +2,10 @@ package InfoManager;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 
+import Input.FactoryFileReader;
 import Input.TaxPayerInfoLoader;
 import Input.TxtReader;
+import Input.XmlReader;
 
 public class TaxPayerListManager {
 	private static ArrayList<TaxPayer> taxPayerArray;
@@ -25,7 +27,18 @@ public class TaxPayerListManager {
 		taxPayerArray.add(taxPayer);
 	}
 	public void importTaxPayer(String afm){
-		addTaxPayer(new TaxPayerInfoLoader(new TxtReader()).loadTaxPayer(afm));
+		//kappa keppo
+		FactoryFileReader fileReader;
+		TaxPayerInfoLoader infoLoader = new TaxPayerInfoLoader();
+		System.out.println(FactoryFileReader.guessSuffix(afm));
+		if(FactoryFileReader.guessSuffix(afm).equals("txt")){
+			fileReader = new TxtReader();
+			infoLoader.setFileReader(fileReader);
+		}else if(FactoryFileReader.guessSuffix(afm).equals("xml")){
+			fileReader = new XmlReader();
+			infoLoader.setFileReader(fileReader);
+		}
+		addTaxPayer(infoLoader.loadTaxPayer(afm));
 	}
 	
 	

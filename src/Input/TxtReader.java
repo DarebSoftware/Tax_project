@@ -14,21 +14,9 @@ import InfoManager.Receipt;
 import InfoManager.TaxPayer;
 
 public class TxtReader implements FactoryFileReader{
-	private static String PATH=("C:\\Users\\pantzos\\Desktop\\");
-	private static String suffix = ".txt";
+	private final String suffix = ".txt";
 	
 	public TaxPayer loadInfo(String AFM){
-		//delete this---------------------------------------------------------
-		File folder = new File(PATH);
-		File[] listOfFiles = folder.listFiles();
-		    for (int i = 0; i < listOfFiles.length; i++) {
-		      if (listOfFiles[i].isFile()) {
-		    	  String temp = listOfFiles[i].getName();
-		    	  int a = temp.indexOf('.');
-		    	  System.out.println(temp.substring(a));
-		      }
-		    }
-		 //-----------------------------------------------------------------------------
 		Scanner inputReader = null;
 		TaxPayer taxpayer = new TaxPayer(this);
 		try{

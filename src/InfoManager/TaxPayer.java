@@ -118,19 +118,19 @@ public class TaxPayer {
 	}
 	
 	public double calculateTax(){
-		if(maritalStatus.equals("Single")){
+		if(maritalStatus.contains("Single")){
 			return calculateSingleTax();
 		}
 		
-		else if(maritalStatus.equals("Married Filing Jointly")){
+		else if(maritalStatus.contains("Married Filing Jointly")){
 			return calculateMarriedFilingJointlyTax();
 		}
 		
-		else if(maritalStatus.equals("Married Filing Separately")){
+		else if(maritalStatus.contains("Married Filing Separately")){
 			return calculateMarriedFilingSeparatelyTax();
 		}
 		
-		else if(maritalStatus.equals("Head of Household")){
+		else if(maritalStatus.contains("Head of Household")){
 			return calculateHeadofHouseholdTax();
 		}
 		

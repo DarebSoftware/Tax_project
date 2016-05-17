@@ -30,7 +30,7 @@ public class Receipt {
 	}
 	
 	public void setKind(String kind){
-		this.kind = kind;
+		this.kind = kind.replaceAll(" ", "");
 	}
 	
 	public void setAmount(double amount){

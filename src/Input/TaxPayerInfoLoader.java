@@ -10,6 +10,15 @@ public class TaxPayerInfoLoader{
 		this.fileReader=fileReader;
 	}
 	
+	public TaxPayerInfoLoader(){
+		fileReader=new TxtReader();
+	}
+	
+	public void setFileReader(FactoryFileReader fileReader){
+		this.fileReader = fileReader;
+	}
+	
+	
 	public TaxPayer loadTaxPayer(String AFM){
 		return fileReader.loadInfo(AFM);
 	}
